@@ -18,6 +18,7 @@ positive_label = pd.DataFrame(data=tmp_pos_label, columns=['label'])
 negative_text = pd.read_csv('data/neg.txt', header=None, names=['text'])
 negative_label = pd.DataFrame(data=tmp_neg_label, columns=['label'])
 
+# label negative (=0) and positive (=1)
 positive_text_label = pd.concat((positive_text, positive_label), axis=1)
 negative_text_label = pd.concat((negative_text, negative_label), axis=1)
 
@@ -25,7 +26,7 @@ negative_text_label = pd.concat((negative_text, negative_label), axis=1)
 text_data = pd.concat((positive_text_label, negative_text_label), axis=0)
 
 # %%
-
+# do not know???
 pos_txt_tknzd = positive_text.text.apply(word_tokenize)
 pos_txt_list = []
 for x in pos_txt_tknzd:
@@ -35,6 +36,7 @@ fdist = FreqDist(pos_txt_list)
 fdist.plot(60, cumulative=False)
 plt.show()
 # %%
+# loading data??
 Sentiment_count = text_data.groupby('label').count()
 plt.bar(Sentiment_count.index.values, Sentiment_count['text'])
 plt.xlabel('Review Sentiments')
