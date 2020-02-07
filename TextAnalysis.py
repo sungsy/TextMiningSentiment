@@ -19,7 +19,7 @@ negative_text_data = io.read_data(src_data='data/neg.txt')
 text_data = pd.concat((positive_text_data, negative_text_data), axis=0)
 
 # %%
-# loading data??
+# loading data
 Sentiment_count = text_data.groupby('label').count()
 plt.bar(Sentiment_count.index.values, Sentiment_count['text'])
 plt.xlabel('Review Sentiments')
@@ -57,6 +57,7 @@ from sklearn.ensemble import RandomForestClassifier
 clf_RF = RandomForestClassifier().fit(X_train, y_train)
 predicted_RF = clf_RF.predict(X_test)
 print("Random Forest Accuracy:", metrics.accuracy_score(y_test, predicted_RF))
+
 # %%
 # Train Logistic Regression Classifier
 from sklearn.linear_model import LogisticRegression
@@ -65,12 +66,20 @@ predicted_LogReg = clf_LogReg.predict(X_test)
 print("Logistic Regression Accuracy:", metrics.accuracy_score(y_test, predicted_LogReg))
 
 # %%
+# Train Linear SVC Classifier
+from sklearn.svm import LinearSVC
+clf_SVM = LinearSVC().fit(X_train, y_train)
+predicted_SVM = clf_SVM.predict(X_test)
+print("Linear SVC Classifier:", metrics.accuracy_score(y_test, predicted_SVM))
+
+# %%
 # https://streamhacker.com/2012/11/22/text-classification-sentiment-analysis-nltk-scikitlearn/
 print("Random Forest Accuracy:", metrics.accuracy_score(y_test, predicted_RF))
 print("MultinomialNB Accuracy:", metrics.accuracy_score(y_test, predicted_MNB))
 print("Logistic Regression Accuracy:", metrics.accuracy_score(y_test, predicted_LogReg))
+print("Linear SVC Classifier:", metrics.accuracy_score(y_test, predicted_SVM))
 
-# %%
+2# %%
 # Read Evaluation Data from TXT file
 evaluation_data = pd.read_csv('data/evaluation.txt', names=['text'])
 
@@ -79,11 +88,12 @@ evaluation_data = pd.read_csv('data/evaluation.txt', names=['text'])
 text_counts_eval = cv.transform(evaluation_data['text'])
 # %%
 # Predict Evaluation Data
-eval_predict = clf_MNB.predict(text_counts_eval)
+eval_predict = clf_LogReg.predict(text_counts_eval)
 eval_predict = pd.DataFrame(data=eval_predict, columns=['label'])
 eval_predict_results = pd.concat((evaluation_data, eval_predict), axis=1)
 
 # %%
 # Write Results into csv
 io.write_predicted_data(eval_predict)
+
 
